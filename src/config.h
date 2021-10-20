@@ -10,8 +10,11 @@ extern const int MEM_FRIENDLY;
 // shows if the code is equal-length. If flag is 1, each command codes with one byte
 
 extern const int CELL_SIZE;
-typedef int32_t cell_t;
 // Cell is a memory used by single item of a program
+
+extern const int REGISTER_NUMBER;
+
+typedef int32_t cell_t;
 
 enum ERRORS {
     WRONG_COMMAND = -1,

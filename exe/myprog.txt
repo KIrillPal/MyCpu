@@ -1,4 +1,22 @@
-PUSH 20
-PUSH 11
-DEL
+PUSH -1
+PUSH 5
+PUSH 2
+
+POP cx
+POP bx
+POP ax
+
+PUSH bx
+PUSH bx
+MUL
+
+PUSH 4
+PUSH ax
+PUSH cx
+MUL
+MUL
+
+SUB
+
 OUT
+HLT

@@ -9,28 +9,34 @@ int decompile(cell_t * code, int program_size)
     for (counter = 0; counter < program_size;)
     {
         int command = code[counter++];
+		int cmd_number = command & ARG_CMD;
 
-        if (command < 0 || command >= NCOMMANDS)
+        if (cmd_number < 0 || cmd_number >= NCOMMANDS)
         {
-            fprintf(stderr, "Decompilation error: unknown command code '%d'\n", command);
+            fprintf(stderr, "Decompilation error: unknown command code '%d'\n", cmd_number);
             return WRONG_COMMAND;
         }
 
-        printf("%s", COMMAND_NAME[command]);
+        printf("%s", COMMAND_NAME[cmd_number++]);
 
-        if (counter + COMMAND_ARG_NUMBER[command] > program_size)
-        {
-            fprintf(stderr, "Decompilation error: code corrupted. Please recompile\n");
-            return ARG_ERROR;
-        }
+		if (command & ARG_MEM)
+			printf("[");
 
-        int args = 0;
+		if (command & ARG_REG)
+		{
+			char reg_symbol = 'a' + code[counter++];
+			char out_reg[3] = { reg_symbol, 'x', '\0' };
+			printf("%s", out_reg);
+		}
 
-        while (args < COMMAND_ARG_NUMBER[command])
-        {
-            printf(" %ld", code[counter++]);
-            args++;
-        }
+		if (command & ARG_REG && command & ARG_IMM)
+			printf("+");
+
+		if (command & ARG_IMM)
+			printf("%d", code[counter++]);
+
+		if (command & ARG_MEM)
+			printf("]");
 
         printf("\n");
     }
