@@ -158,7 +158,7 @@ int compile(uint8_t* data)
             cell_t reg = -1;
 
 
-            if (command & ARG_ALL)
+            if ((command & ARG_VALUE) || (command & ARG_PATH))
             {
 
                 int read_code = parseArgs(&imm, &reg);
@@ -185,6 +185,10 @@ int compile(uint8_t* data)
                 }
 
                 command &= (read_code | ARG_CMD);
+            }
+            else if (command & ARG_LABEL)
+            {
+                
             }
 
             if (pushBytes(data, &code_size, (uint8_t*) &command, command_bytes))

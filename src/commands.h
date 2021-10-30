@@ -33,6 +33,14 @@ enum ASM_COMMANDS
     ASM_DEL  = 6,
     ASM_DUPE = 7,
     ASM_OUT  = 8,
+    ASM_JMP  = 9
 };
 // command codes
 
+enum ASM_ARGTYPE
+{
+    ARG_NOARG = 0,
+    ARG_VALUE = ASM_IMM | ASM_REG | ASM_MEM,
+    ARG_PATH  = ASM_REG | ASM_MEM,
+    ARG_LABEL = ARG_IMM | ASM_MEM
+}
