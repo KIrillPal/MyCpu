@@ -1,6 +1,6 @@
 #pragma once
 
-#define NCOMMANDS 9
+#define NCOMMANDS 19
 #define MAX_COMMAND_LENGTH 5
 
 extern const int  COMMAND_ARG_NUMBER[NCOMMANDS];
@@ -27,20 +27,31 @@ enum ASM_COMMANDS
     ASM_HLT  = 0,
     ASM_PUSH = 1,
     ASM_POP  = 2,
-    ASM_ADD  = 3,
-    ASM_SUB  = 4,
-    ASM_MUL  = 5,
-    ASM_DEL  = 6,
-    ASM_DUPE = 7,
-    ASM_OUT  = 8,
-    ASM_JMP  = 9
+	ASM_IN   = 3,
+
+	ASM_ADD  = 4,
+	ASM_SUB  = 5,
+	ASM_MUL  = 6,
+	ASM_DEL  = 7,
+	ASM_DUPE = 8,
+	ASM_OUT  = 9,
+
+	ASM_JMP  = 10,
+	ASM_JE   = 11,
+	ASM_JNE  = 12,
+	ASM_JL   = 13,
+	ASM_JLE  = 14,
+	ASM_JG   = 15,
+	ASM_JGE  = 16,
+	ASM_CALL = 17,
+	ASM_RET  = 18
 };
 // command codes
 
 enum ASM_ARGTYPE
 {
-    ARG_NOARG = 0,
-    ARG_VALUE = ASM_IMM | ASM_REG | ASM_MEM,
-    ARG_PATH  = ASM_REG | ASM_MEM,
-    ARG_LABEL = ARG_IMM | ASM_MEM
-}
+	ARG_NOARG = 0,
+	ARG_VALUE = ARG_IMM | ARG_REG | ARG_MEM,
+	ARG_PATH  = ARG_REG | ARG_MEM,
+	ARG_LABEL = ARG_IMM | ARG_MEM
+};

@@ -68,8 +68,6 @@ int readCode(FILE * file, cell_t ** code, int * size)
         return READ_ERROR;
     }
 
-
-
     if (mem_friendly)
     {
         cell_t * unify = (cell_t*)calloc(program_size, 1);
