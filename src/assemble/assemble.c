@@ -387,8 +387,8 @@ FILE* getFile(const char* path, const char* mode, const char* err)
 
 int main(int arc, char * argv[])
 {
-	FILE* fin = NULL;
-	FILE* fout = NULL;
+	FILE* fin = stdin;
+	FILE* fout = stdout;
 	if (arc > 1)
 		fin = getFile(argv[1], "r", "Compilation error: Can't open input file");
 	if (arc > 2)
