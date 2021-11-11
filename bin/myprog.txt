@@ -1,0 +1,17 @@
+	PUSH 10 ; comment
+	POP ax
+
+	PUSH 1
+	POP bx
+
+cycle:
+	PUSH bx
+	OUT
+	PUSH bx
+	PUSH 1
+	ADD
+	POP bx
+	PUSH bx
+	PUSH ax
+	JNE cycle
+	HLT

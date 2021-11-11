@@ -1,0 +1,182 @@
+JMP ~sqrt ; 1 arg
+sqrt:
+	POP  [228]
+	PUSH 0
+	POP  [229]
+
+sqrt_while:
+	PUSH [229] ; ans := r
+	POP  [230]
+
+	PUSH [229] ; r++
+	PUSH 1
+	ADD
+	POP [229]
+
+	PUSH [229] ; while r*r <= n
+	PUSH [229]
+	MUL
+	PUSH [228] 
+	JLE sqrt_while
+
+	PUSH [230] ; return ans
+	RET
+~sqrt:
+
+JMP ~solve_linear ; Solves only linear functions ; 2 args
+solve_linear:
+	POP bx
+	POP ax
+
+	PUSH bx
+	PUSH -1
+	MUL
+	PUSH ax
+	DEL
+	RET
+~solve_linear:
+
+JMP ~solve_square ; Solves only square functions ; 3 args
+solve_square:
+	POP cx ; input values
+	POP bx
+	POP ax
+
+	PUSH bx ; cound discriminant
+	PUSH bx
+	MUL
+	PUSH 4
+	PUSH ax
+	MUL
+	PUSH cx
+	MUL
+	SUB
+	POP dx ; dx := D
+
+	PUSH dx
+	PUSH 0
+	JL solve_square_noroots
+
+	PUSH dx
+	CALL sqrt
+	POP dx ; dx = sqrt(D)
+
+	PUSH ax ; cx := 2a
+	PUSH 2
+	MUL
+	POP cx
+
+	PUSH bx
+	PUSH -1
+	MUL
+	POP bx ; bx = -b
+
+	PUSH bx
+	PUSH dx
+	ADD
+	PUSH cx
+	DEL
+	POP ax ; ax = root1
+
+	PUSH bx
+	PUSH dx
+	SUB
+	PUSH cx
+	DEL
+	POP bx ; bx = root2
+
+	PUSH ax
+	PUSH bx
+	JE solve_square_oneroot
+
+	solve_square_tworoots:
+		PUSH 2
+		PUSH ax
+		PUSH bx
+	RET
+	solve_square_oneroot:
+		PUSH 1
+		PUSH ax
+		PUSH -1
+	RET
+	solve_square_noroots:
+		PUSH 0
+		PUSH -1
+		PUSH -1
+	RET
+~solve_square:
+
+JMP ~solve_equation ; Solves square functions ; 3 args
+solve_equation:
+	POP cx ; input values
+	POP bx
+	POP ax
+
+	PUSH ax
+	PUSH 0
+	JNE solve_equation_sq
+
+	PUSH bx
+	PUSH 0
+	JNE solve_equation_sl
+
+	PUSH cx
+	PUSH 0
+	JNE solve_equation_ns
+
+	PUSH -1
+	PUSH -1
+	PUSH -1
+	RET
+
+	solve_equation_ns:
+		PUSH 0
+		PUSH -1
+		PUSH -1
+	RET
+	solve_equation_sl:
+		PUSH 1
+		PUSH bx
+		PUSH cx
+		CALL solve_linear
+		PUSH -1
+	RET
+	solve_equation_sq:
+		PUSH ax
+		PUSH bx
+		PUSH cx
+		CALL solve_square
+	RET
+~solve_equation:
+
+
+
+IN ; precision
+POP ax
+
+IN ; a
+
+IN ; b
+PUSH ax
+MUL
+
+IN ; c
+PUSH ax
+MUL
+PUSH ax
+MUL
+
+
+
+CALL solve_equation
+POP cx
+POP bx
+POP ax
+
+PUSH ax
+OUT
+PUSH bx
+OUT
+PUSH cx
+OUT
+HLT

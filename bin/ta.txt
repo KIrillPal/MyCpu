@@ -1,0 +1,8 @@
+PUSH [15]
+PUSH 12
+PUSH ax+5
+PUSH [ax+5]
+OUT
+OUT
+OUT
+OUT
