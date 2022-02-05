@@ -1,0 +1,36 @@
+JMP ~gcd ; work with 2 arguments
+gcd: 
+	POP bx
+	POP ax
+
+	gcd_while:
+	PUSH 0
+	PUSH bx
+
+	JGE gcd_ret
+
+		PUSH ax
+		PUSH ax
+		PUSH bx
+		DEL
+		PUSH bx
+		MUL
+		SUB
+
+		PUSH bx
+		POP ax
+
+		POP bx
+
+		JMP gcd_while
+  	gcd_ret:
+  	PUSH ax
+  	RET
+~gcd:
+
+IN ; a
+IN ; b
+
+CALL gcd
+OUT
+HLT

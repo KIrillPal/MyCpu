@@ -1,0 +1,177 @@
+JMP C
+
+A:
+
+POP [228]
+PUSH 0
+POP [229]
+
+B:
+
+PUSH [229]
+POP [230]
+PUSH [229]
+PUSH 1
+ADD 
+POP [229]
+PUSH [229]
+PUSH [229]
+MUL 
+PUSH [228]
+JLE B
+PUSH [230]
+RET 
+
+C:
+
+JMP E
+
+D:
+
+POP bx
+POP ax
+PUSH bx
+PUSH -1
+MUL 
+PUSH ax
+DEL 
+RET 
+
+E:
+
+JMP I
+
+F:
+
+POP cx
+POP bx
+POP ax
+PUSH bx
+PUSH bx
+MUL 
+PUSH 4
+PUSH ax
+MUL 
+PUSH cx
+MUL 
+SUB 
+POP dx
+PUSH dx
+PUSH 0
+JL H
+PUSH dx
+CALL A
+POP dx
+PUSH ax
+PUSH 2
+MUL 
+POP cx
+PUSH bx
+PUSH -1
+MUL 
+POP bx
+PUSH bx
+PUSH dx
+ADD 
+PUSH cx
+DEL 
+POP ax
+PUSH bx
+PUSH dx
+SUB 
+PUSH cx
+DEL 
+POP bx
+PUSH ax
+PUSH bx
+JE G
+PUSH 2
+PUSH ax
+PUSH bx
+RET 
+
+G:
+
+PUSH 1
+PUSH ax
+PUSH -1
+RET 
+
+H:
+
+PUSH 0
+PUSH -1
+PUSH -1
+RET 
+
+I:
+
+JMP N
+
+J:
+
+POP cx
+POP bx
+POP ax
+PUSH ax
+PUSH 0
+JNE M
+PUSH bx
+PUSH 0
+JNE L
+PUSH cx
+PUSH 0
+JNE K
+PUSH -1
+PUSH -1
+PUSH -1
+RET 
+
+K:
+
+PUSH 0
+PUSH -1
+PUSH -1
+RET 
+
+L:
+
+PUSH 1
+PUSH bx
+PUSH cx
+CALL D
+PUSH -1
+RET 
+
+M:
+
+PUSH ax
+PUSH bx
+PUSH cx
+CALL F
+RET 
+
+N:
+
+IN 
+POP ax
+IN 
+IN 
+PUSH ax
+MUL 
+IN 
+PUSH ax
+MUL 
+PUSH ax
+MUL 
+CALL J
+POP cx
+POP bx
+POP ax
+PUSH ax
+OUT 
+PUSH bx
+OUT 
+PUSH cx
+OUT 
+HLT 

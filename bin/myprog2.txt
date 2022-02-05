@@ -1,0 +1,15 @@
+PUSH 10
+POP ax
+PUSH 1
+POP bx
+A:
+PUSH bx
+OUT 
+PUSH bx
+PUSH 1
+ADD 
+POP bx
+PUSH bx
+PUSH ax
+JNE A
+HLT 

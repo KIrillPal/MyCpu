@@ -68,8 +68,6 @@ int readCode(FILE * file, cell_t ** code, int * size)
         return READ_ERROR;
     }
 
-
-
     if (mem_friendly)
     {
         cell_t * unify = (cell_t*)calloc(program_size, 1);
@@ -85,25 +83,34 @@ int readCode(FILE * file, cell_t ** code, int * size)
 
         for (int sz = 0; sz < data_size;)
         {
-            int command = raw_data[sz++];
+            cell_t command = raw_data[sz++];
             unify[unify_size++] = command;
 
-            int args = 0;
-            while (args < COMMAND_ARG_NUMBER[command])
-            {
-                if (sz + CELL_SIZE > data_size)
-                {
-                    fprintf(stderr, "File reading error: Invalid file format. Please recompile\n");
-                    free(raw_data);
-                    free(unify);
-                    return READ_ERROR;
-                }
+			int need_space = 0;
+			need_space += ((command & ARG_REG) ? CELL_SIZE : 0);
+			need_space += ((command & ARG_IMM) ? CELL_SIZE : 0);
 
-                unify[unify_size++] = *((cell_t*)(raw_data + sz));
+			if (sz + need_space > data_size)
+			{
+				fprintf(stderr, "File reading error: Invalid code format. Please recompile\n");
+				free(raw_data);
+				free(unify);
+				return READ_ERROR;
+			}
 
-                sz += CELL_SIZE;
-                args++;
-            }
+			if (command & ARG_REG)
+			{
+				unify[unify_size++] = *((cell_t*)(raw_data + sz));
+
+				sz += CELL_SIZE;
+			}
+
+			if (command & ARG_IMM)
+			{
+				unify[unify_size++] = *((cell_t*)(raw_data + sz));
+
+				sz += CELL_SIZE;
+			}
         }
 
         free(raw_data);
