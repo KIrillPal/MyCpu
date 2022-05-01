@@ -4,8 +4,8 @@
 #include <sys/stat.h>
 #include <time.h>
 
-#define MAX_FILE_PATH_LENGTH 30
-#define FILE_NUMBER 11
+#define MAX_FILE_PATH_LENGTH 50
+#define FILE_NUMBER 20
 
 int getTime(const char* file_path, time_t* time)
 {
@@ -61,12 +61,16 @@ int main(int arc, char * argv[])
 
     const char ASSEMBLE_FILES[FILE_NUMBER][MAX_FILE_PATH_LENGTH] =
     {
-        "../src/config.h",
+         "../src/config.h",
         "../src/commands.h",
+		"../src/assemble/name_table.h",
+		"../src/assemble/text.h",
 
         "../src/config.c",
         "../src/commands.c",
-        "../src/assemble.c"
+        "../src/assemble/assemble.c",
+		"../src/assemble/name_table.c",
+		"../src/assemble/text.c"
     };
 
     const char DISASSEMBLE_FILES[FILE_NUMBER][MAX_FILE_PATH_LENGTH] =
@@ -78,7 +82,7 @@ int main(int arc, char * argv[])
         "../src/config.c",
         "../src/commands.c",
         "../src/code_utils.c",
-        "../src/disassemble.c"
+        "../src/disassemble/disassemble.c"
     };
 
     const char RUN_FILES[FILE_NUMBER][MAX_FILE_PATH_LENGTH] =
@@ -86,31 +90,37 @@ int main(int arc, char * argv[])
         "../src/config.h",
         "../src/commands.h",
         "../src/code_utils.h",
-        "../../MyStack/stack.h",
+		"../../MyStack/src/stack_errors.h",
+		"../../MyStack/src/prot/stack_protection.h",
+		"../../MyStack/src/stack_utils.h",
+		"../../MyStack/src/stack.h",
 
         "../src/config.c",
         "../src/commands.c",
         "../src/code_utils.c",
-        "../../MyStack/stack.c",
-        "../src/run.c"
+		"../../MyStack/src/stack_errors.c",
+		"../../MyStack/src/prot/stack_protection.c",
+		"../../MyStack/src/stack_utils.c",
+        "../../MyStack/src/stack.c",
+        "../src/run/run.c"
     };
 
     if (update(ASSEMBLE_FILES, 5, "assemble",
-        "g++ ../src/config.c ../src/commands.c ../src/assemble.c -o assemble"))
+        "g++ ../src/config.c ../src/commands.c ../src/assemble/name_table.c ../src/assemble/text.c ../src/assemble/assemble.c -o ../bin/assemble"))
     {
         printf("Make aborted!\n");
         return 0;
     }
 
     if (update(DISASSEMBLE_FILES, 7, "disassemble",
-        "g++ ../src/config.c ../src/commands.c ../src/code_utils.c ../src/disassemble.c -o disassemble"))
+        "g++ ../src/config.c ../src/commands.c ../src/code_utils.c ../src/disassemble/disassemble.c -o ../bin/disassemble"))
     {
     printf("Make aborted!\n");
     return 0;
     }
 
     if (update(RUN_FILES, 9, "run",
-        "g++ ../src/config.c ../src/commands.c ../src/code_utils.c ../../MyStack/stack.c ../src/run.c -o run"))
+        "g++ ../../MyStack/src/stack_errors.c ../../MyStack/src/prot/stack_protection.c ../../MyStack/src/stack_utils.c ../../MyStack/src/stack.c ../src/config.c ../src/commands.c ../src/code_utils.c ../src/run/run.c -o ../bin/run"))
     {
     printf("Make aborted!\n");
     return 0;
@@ -118,13 +128,13 @@ int main(int arc, char * argv[])
 
     if (arc >= 2)
     {
-        char asm_command[50] = "./assemble < ";
+        char asm_command[50] = "../bin/assemble < ";
         strcat(asm_command, argv[1]);
         strcat(asm_command, " > ");
         strcat(asm_command, BYTECODE_FILE);
         system(asm_command);
 
-        char run_command[50] = "./run < ";
+        char run_command[50] = "../bin/run ";
         strcat(run_command, BYTECODE_FILE);
         system(run_command);
     }
